@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>koa.js - Quick Start</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/plusinnovations.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>koa</h1>
+					<p>
+						<small>next generation web framework for node js</small>
+					</p>
+				</section>
+
+				<section>		
+					<img width="691" height="135" data-src="img/plus-innovations-full white.png" alt="plus-innovations">
+				</section>		
+				<section>		
+
+					<img width="500" height="245" data-src="img/campgn_logo_4c_2000.png" alt="campgn">
+					<h3>Simple. Social.</h3>
+					<p>The world's simplest community building, campaigning and fundraising platform.</p>
+				</section>		
+
+				<section>
+					<h2>What is koa?</h2>
+					<p>What THEY say ...</p><br>
+					<ul>
+						<li>designed by the team behind Express</li>
+						<li>smaller, more expressive, and more robust foundation</li>
+						<li>does not bundle any middleware within core</li>
+						<li>leverages generators - allows you to ditch callbacks</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Why not using koa?</h2>
+					<ul>
+						<li>koa is barebone</li>
+						<li>does not include any middleware</li>
+						<li>routing is not provided</li>
+						<li>many convenience utilities not provided (e.g. sending files)</li>
+						<li>still not the same momentum as express</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Why koa?</h2>
+					<ul>
+						<li>Extremely minimal - no bundled middelware</li>
+						<li>Freedom from callback hell - uses generators (ES6)</li>
+						<li>Context - simplifies requests and responses in general</li>
+						<li>Cascading - awesome middleware concept, using ES6 generators</li>
+						<li>Simplifying error handling - through try/catch</li>
+						<li>Speed - aprox 15% more requests handled</li>
+						<li>koa is more modular</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>So lets see what koa is ...</h2>
+				</section>
+
+				<section>
+					<h2>Express</h2>
+					<pre><code data-trim contenteditable>
+var express = require('express');
+var app = express();
+
+app.use(function(req, res, next){
+  res.send('Hello World');
+});
+
+app.listen(3000);
+					</code></pre>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/01_express_helloworld.js">01_express_helloworld.js</a></p>
+				</section>
+
+				<section>
+					<h2>koa</h2>
+					<pre><code data-trim contenteditable>
+var koa = require('koa');
+var app = koa();
+
+app.use(function *(){
+  this.response.body = 'Hello World';
+});
+
+app.listen(3000);
+					</code></pre>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/02_koa_helloworld.js">02_koa_helloworld.js</a></p>
+				</section>
+
+				<section>
+					<h2>koa context</h2>
+					<pre><code data-trim contenteditable>
+app.use(function *(){  
+  this; // is the Context
+  this.request; // is a koa Request
+  this.response; // is a koa Response
+  this.req; // Node's request
+  this.res; // Node's response
+
+  this.response.body = ... ;
+  this.body = ...
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Let's write an REST-API ...</h2>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/03_koa_router.js">03_koa_router.js</a></p><br><br>
+					<p>... and call it in the browser with <a href="http://localhost:3000/v1/all">http://localhost:3000/v1/all</a></p>
+				</section>
+
+				<section>
+					<h2>Generator funtions</h2>
+					<p>The <b>function*</b> declaration defines a generator function, which returns a Generator <b>object</b>.</p>
+				</section>
+
+				<section>
+					<h2>Generator funtions</h2>
+					<ul>
+						<li>Generators are functions which can be exited and later re-entered</li>
+						<li>Their context (variable bindings) will be saved across re-entrances.</li>
+						<li>Calling a generator function does not execute its body immediately</li>
+						<li>An iterator object for the function is returned instead</li>
+						<li>When the iterator's next() method is called, the generator function's body is executed until the first yield expression</li>
+						<li>So a generator function is controlled from "outside"</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Generator example</h2>
+					<pre><code data-trim contenteditable>
+function* idMaker(){
+  var index = 0;
+  while(index < 3)
+    yield index++;
+}
+
+var gen = idMaker();
+
+console.log(gen.next().value); // 0
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // undefined
+// ...
+					</code></pre>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/04_generators.js">04_generators.js</a></p><br><br>
+				</section>
+
+				<section>
+					<h2>YIELD</h2>
+					<ul>
+						<li>Yo</li>
+						<li>I</li>
+						<li>Expect a</li>
+						<li>Little</li>
+						<li>Delay</li>
+					</ul>
+				</section>
+
+				<section>		
+					<h2>Express Way</h2>
+					<img width="1000" height="446" data-src="img/express_way.png" alt="express_way">
+				</section>		
+
+				<section>		
+					<h2>koa Way</h2>
+					<img width="1000" height="446" data-src="img/koa_way.png" alt="koa_way">
+				</section>		
+
+
+				<section>
+					<h2>A koa application ...</h2>
+					<p>... is an object containing an <b>array of middleware generator functions</b> which are composed and executed in a <b>stack-like</b> manner upon request</p>
+				</section>
+
+				<section>
+					<h2>Let's write middleware ...</h2>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/05_koa_middleware.js">05_koa_middleware.js</a></p>
+				</section>
+
+				<section>
+					<h2>Compare it to Express</h2>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/06_express_middleware.js">06_express_middleware.js</a></p>
+					<p>... here you have to proxy the real end function.</p>
+				</section>
+
+				<section>
+					<h2>Error handling ...</h2>
+					<p><a href="https://github.com/sebhildebrandt/presentation_koajs/blob/master/07_koa_errorhandling.js">07_koa_errorhandling.js</a></p>
+				</section>
+
+
+				<section data-markdown>
+				## Compare koa / Express
+| Feature           | Koa | Express | Connect |
+|------------------:|-----|---------|---------|
+| Middleware Kernel | ✓   | ✓       | ✓       |
+| Routing           |     | ✓       |         |
+| Templating        |     | ✓       |         |
+| Sending Files     |     | ✓       |         |
+| JSONP             |     | ✓       |         |
+				</section>
+
+				<section>
+					<h2>koa</h2>
+					<h3>Frameworks &amp; Middleware</h3>
+					<p><a href="https://github.com/koajs/koa/wiki">https://github.com/koajs/koa/wiki</a></p>
+				</section>
+
+				<section tagcloud>
+					koa-cors
+					koa-force-ssl
+					koa-ip-filter
+					koa-body
+					koa-better-ratelimit
+					koa-vhost
+					koa-sub-domain
+					koa-mount
+					koa-router
+					koa-route
+					koa-sendfile
+					koa-favicon
+					koa-serve-staic
+					koa-gzip
+					koa-minify
+					koa-uglify2
+					koa-jwt
+					koa-session
+					koa-ejs
+					koa-jade
+					koa-swig
+					koa-views
+					koa-pg
+					koa-mongo
+					koa-redis-pool
+				</section>
+
+				<section>
+					<h2>Summary</h2>
+					<ul>
+						<li>koa is barebone</li>
+						<li>Koa relies less on middleware</li>
+						<li>koa is very modular</li>
+						<li>koa simplifies error handling</li>
+						<li>koa is fast</li>
+						<li>koa is ES6</li>
+					</ul>
+				</section>
+
+				<section>		<!-- ENDE -->
+					<h1>Thank you!</h1>
+					<p>&copy; 2015 Sebastian Hildebrandt</p><br />
+					<table class="center">
+						<tr>
+							<td><i class="fa fa-envelope fa-lg"></i></td>
+							<td>hildebrandt@plus-innovations.com</td>
+						</tr>
+						<tr>
+							<td><i class="fa fa-globe fa-lg"></i></td>
+							<td>http://www.plus-innovations.com</td>
+						</tr>
+						<tr>
+							<td><i class="fa fa-twitter-square fa-lg"></i></td>
+							<td>@plus-innovations</td>
+						</tr>
+						<tr>
+							<td><i class="fa fa-github-square fa-lg"></i></td>
+							<td>https://github.com/sebhildebrandt</td>
+						</tr>
+					</table>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/tagcloud/tagcloud.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
